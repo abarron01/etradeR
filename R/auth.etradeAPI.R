@@ -1,12 +1,5 @@
-#'Authenticates and create valid session.  
-#'\code{auth(etradeAPI)}
-#'@param etradeApi etradeAPI object that contain account information
-#'@param debug Print out debug information, default = FALSE
-#'@return value of auth code from from etrade.
 #'@export
-#'@examples
-#'\dontrun{ auth(etradeAPI) }
-#'@details Uses a combination of python and R to create an authenticated session in the python shell. \cr
+
 
 auth.etradeAPI <-function(etradeAPI,debug=FALSE){
   

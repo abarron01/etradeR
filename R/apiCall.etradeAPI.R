@@ -1,20 +1,32 @@
-#'get respost from etradeAPI call.  Currently is executed in the python enviromment.  
-#'\code{apiCall(etradeAPI,url,path)}
-#'@param etradeApi etradeAPI object that contain account information
-#'@param url - base url for API call "https://etwssandbox.etrade.com" for sandbox
-#'@param path - path to res object to retrieve "/accounts/sandbox/rest/accountlist.json"
-#'@return value of auth code from from etrade.
 #'@export
-#'@examples
-#'\dontrun{ auth(etradeAPI) }
-#'@details Uses a combination of python and R to create an authenticated session in the python shell. \cr
 
-apiCall.etradeAPI <- function(etradeAPI,url,path) {
+
+apiCall.etradeAPI <- function(etradeAPI,url,path,query=NULL) {
+  
+  #Build the URL
+  
   full_url <- httr::modify_url(url=url, path = path)
   
-  #Build the command
+  #Build the command and add payload if necessary
   
-  cmd<-paste0("raw = session.get('",full_url,"')")
+  if( is.null(query) ){  
+    cmd<-paste0("raw = session.get('",full_url,"')")
+    
+    } else {  
+      rPython::python.exec(paste0("payload=",gsub('"',"'",toJSON(query,auto_unbox = TRUE))))
+      
+      
+      rPython::python.get("payload")
+      
+      
+      cmd<-paste0("raw = session.get('",full_url,"',params=payload)")  ##works
+      
+      
+      
+      
+      
+      
+    }
   
   #Execute the command
   rPython::python.exec(cmd)
@@ -34,10 +46,10 @@ apiCall.etradeAPI <- function(etradeAPI,url,path) {
   #     'apiservername': '20w44m3'}
   
   
-  rPython::python.get("raw.headers['content-type']")
-  rPython::python.get("raw.status_code")
-  rPython::python.get("raw.text")
-  rPython::python.get("raw.url")
+ # rPython::python.get("raw.headers['content-type']")
+#  rPython::python.get("raw.status_code")
+ # rPython::python.get("raw.text")
+#rPython::python.get("raw.url")
   
   #we expect status 200
   if( rPython::python.get("raw.status_code") != 200 ) {

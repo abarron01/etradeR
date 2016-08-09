@@ -19,5 +19,5 @@ session = service.get_session((access_token, access_token_secret))
 print "*** session established"
 
 # we now have a working session. use it to fetch data.
-accounts_raw = session.get('https://etwssandbox.etrade.com/accounts/sandbox/rest/accountlist.json')
-print accounts_raw.text
+#accounts_raw = session.get('https://etwssandbox.etrade.com/accounts/sandbox/rest/accountlist.json')
+#print accounts_raw
